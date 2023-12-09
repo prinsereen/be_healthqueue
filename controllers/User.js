@@ -50,6 +50,7 @@ export const updateUser = async (req, res) => {
         .json({ status: "error", msg: "User tidak ditemukan", result: {} });
     const { name, jenis_pengguna, umur, no_telp, password, confPassword } =
       req.body;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -58,6 +59,7 @@ export const updateUser = async (req, res) => {
         result: errors["errors"],
       });
     }
+    
     let hashPassword;
     if (password === "" || password == null) {
       hashPassword = user.password;

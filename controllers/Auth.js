@@ -12,9 +12,10 @@ export const register = async (req, res) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log(errors)
     return res.status(400).json({
       status: "error",
-      msg: errors["errors"][0].param + " " + errors["errors"][0].msg,
+      msg: errors["errors"][0].path + " " + errors["errors"][0].msg,
       result: errors["errors"],
     });
   }
