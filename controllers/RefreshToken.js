@@ -13,11 +13,10 @@ export const refreshToken = async(req, res) => {
         if(!user[0]) return res.sendStatus(403);
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
             if(err) return res.sendStatus(403);
-            const userId = user[0].id;
-            const name = user[0].name;
-            const jenis_pengguna = user[0].jenis_pengguna;
-            const nik = user[0].nik;
-            const accessToken = jwt.sign({userId, name, jenis_pengguna, nik}, process.env.ACCESS_TOKEN_SECRET, {
+            const userId = user.id;
+            const name = user.name;
+            const jenis_pengguna = user.jenis_pengguna;
+            const accessToken = jwt.sign({userId, name, jenis_pengguna}, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '1d'
             });
             res.json({token: accessToken})

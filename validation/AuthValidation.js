@@ -11,7 +11,9 @@ export const Register = [
         if (existingUser){
             throw new Error('user sudah terdaftar') 
         }
-    })
+    }),
+    check('password').isLength({ min: 1 }).withMessage('tidak boleh kosong'),
+    check('conf_password').isLength({ min: 1 }).withMessage('tidak boleh kosong'),
 ]
 
 export const Login = [
