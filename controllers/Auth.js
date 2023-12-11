@@ -49,19 +49,23 @@ export const login = async (req, res) => {
     });
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) return res.status(400).json({ msg: "Wrong Password" });
+
     const userId = user.id;
-    const name = user.name;
+    const name = user.name
+    const jenis_pengguna = user.jenis_pengguna;
     const email = user.email;
+    const no_telp = user.no_telp
+    
 
     const accessToken = jwt.sign(
-      { userId, name, email },
+      { userId,name, jenis_pengguna, email, no_telp },
       process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: "1d",
       }
     );
     const refreshToken = jwt.sign(
-      { userId, name, email },
+      { userId,name, jenis_pengguna, email, no_telp },
       process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: "1d",
@@ -79,7 +83,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 60 * 1000,
     });
-    res.json({ token: accessToken });
+    res.json({ token: accessToken, result: {id: userId, jenis_pengguna: jenis_pengguna, email: email, no_telp: no_telp}});
   } catch (error) {
     res.status(404).json({ msg: "User Tidak Ditemukan" });
   }
