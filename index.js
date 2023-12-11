@@ -4,7 +4,8 @@ import db from "./config/Database.js";
 import AuthRoute from "./routes/AuthRoute.js"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
-import UserRoute from "./routes/UserRoute.js"
+import UserRoute from "./routes/UserRoute.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -17,6 +18,13 @@ try {
 } catch (error) {
     console.log(error)
 }
+
+app.use(
+    cors({
+      origin: "http://localhost:5173", 
+      credentials: true, 
+    })
+  );
 
 app.use(cookieParser())
 app.use(express.json())
