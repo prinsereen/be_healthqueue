@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 
 export const register = async (req, res) => {
-  const { name, email, password, conf_password } = req.body;
+  const { email, password, conf_password } = req.body;
   if (password !== conf_password)
     return res
       .status(400)
@@ -24,7 +24,6 @@ export const register = async (req, res) => {
   const hashPassword = await bcrypt.hash(password, salt);
   try {
     await Users.create({
-      name: name,
       email: email,
       password: hashPassword,
     });
@@ -32,7 +31,6 @@ export const register = async (req, res) => {
       status: "success",
       msg: "Register Berhasil",
       result: {
-        name: name,
         email: email,
       },
     });
