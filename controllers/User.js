@@ -5,7 +5,7 @@ import { check, validationResult } from "express-validator";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await Users.findAll({
-      attributes: ["id", "name", "jenis_pengguna", "umur", "no_telp", "email"],
+      attributes: ["id", "name", "jenis_pengguna", "no_telp", "email"],
     });
     res.status(200).json({
       status: "success",
@@ -22,7 +22,7 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const user = await Users.findOne({
-      attributes: ["id", "name", "jenis_pengguna", "umur", "no_telp"],
+      attributes: ["id", "name", "jenis_pengguna", "no_telp"],
       where: {
         id: req.params.id,
       },
@@ -48,7 +48,7 @@ export const updateUser = async (req, res) => {
       return res
         .status(404)
         .json({ status: "error", msg: "User tidak ditemukan", result: {} });
-    const { name, jenis_pengguna, umur, no_telp, password, confPassword } =
+    const { name, jenis_pengguna, no_telp, password, confPassword } =
       req.body;
 
     const errors = validationResult(req);
@@ -79,7 +79,6 @@ export const updateUser = async (req, res) => {
           name: name,
           jenis_pengguna: jenis_pengguna,
           password: hashPassword,
-          umur: umur,
           no_telp: no_telp,
         },
         {
@@ -94,7 +93,6 @@ export const updateUser = async (req, res) => {
         result: {
           name: name,
           jenis_pengguna: jenis_pengguna,
-          umur: umur,
           no_telp: no_telp,
         },
       });
