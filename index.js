@@ -1,6 +1,7 @@
 import express from "express"
 import db from "./config/Database.js";
-//import Users from "./models/UserModel.js";
+/* import Users from "./models/UserModel.js";
+import Profile from "./models/Profile.js"; */
 import AuthRoute from "./routes/AuthRoute.js"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
