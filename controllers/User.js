@@ -48,7 +48,7 @@ export const updateUser = async (req, res) => {
       return res
         .status(404)
         .json({ status: "error", msg: "User tidak ditemukan", result: {} });
-    const { name, jenis_pengguna, no_telp, password, confPassword } =
+    const { name, jenis_pengguna, no_telp, password, confPassword, tgl_lahir} =
       req.body;
 
     const errors = validationResult(req);
@@ -59,7 +59,6 @@ export const updateUser = async (req, res) => {
         result: errors["errors"],
       });
     }
-    
     let hashPassword;
     if (password === "" || password == null) {
       hashPassword = user.password;
@@ -80,6 +79,8 @@ export const updateUser = async (req, res) => {
           jenis_pengguna: jenis_pengguna,
           password: hashPassword,
           no_telp: no_telp,
+          photo_url: req.file.path,
+          tgl_lahir: tgl_lahir
         },
         {
           where: {
@@ -87,6 +88,9 @@ export const updateUser = async (req, res) => {
           },
         }
       );
+      const dob = new Date(tgl_lahir);
+      const age = new Date().getFullYear() - dob.getFullYear();
+
       res.status(200).json({
         status: "success",
         msg: "User Updated",
@@ -94,6 +98,8 @@ export const updateUser = async (req, res) => {
           name: name,
           jenis_pengguna: jenis_pengguna,
           no_telp: no_telp,
+          photo_url: req.file.path,
+          age: age,
         },
       });
     } catch (error) {

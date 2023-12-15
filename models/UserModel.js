@@ -19,6 +19,12 @@ const Users = db.define('users', {
     no_telp:{
         type: DataTypes.STRING
     },
+    tgl_lahir:{
+        type: DataTypes.DATE
+    },
+    photo_url:{
+        type: DataTypes.STRING
+    },
     refresh_token: {
         type: DataTypes.TEXT
     }
