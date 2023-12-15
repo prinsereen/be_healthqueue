@@ -15,8 +15,8 @@ export const createProfile = async (req, res) => {
         }
 
         await Profile.create({
-            profile_name: profile_name,
-            contentRating: contentRating,
+            profile_name,
+            contentRating,
             userId: req.userId,
         });
 
