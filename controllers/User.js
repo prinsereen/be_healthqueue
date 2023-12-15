@@ -79,7 +79,6 @@ export const updateUser = async (req, res) => {
           jenis_pengguna: jenis_pengguna,
           password: hashPassword,
           no_telp: no_telp,
-          photo_url: req.file.path,
           tgl_lahir: tgl_lahir
         },
         {
@@ -98,7 +97,7 @@ export const updateUser = async (req, res) => {
           name: name,
           jenis_pengguna: jenis_pengguna,
           no_telp: no_telp,
-          photo_url: req.file.path,
+          //photo_url: req.file.path,
           age: age,
         },
       });

@@ -22,9 +22,6 @@ const Users = db.define('users', {
     tgl_lahir:{
         type: DataTypes.DATE
     },
-    photo_url:{
-        type: DataTypes.STRING
-    },
     refresh_token: {
         type: DataTypes.TEXT
     }
