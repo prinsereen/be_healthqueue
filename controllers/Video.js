@@ -71,3 +71,29 @@ export const getLatestMovie = async(req, res) => {
     }
     
 }
+
+
+export const getUpcomingtMovie = async(req, res) => {
+    const options = {
+    method: 'GET',
+    url: 'https://ott-details.p.rapidapi.com/advancedsearch',
+    params: {
+        sort: 'latest',
+        page: '1'
+    },
+    headers: {
+        'X-RapidAPI-Key': process.env.X_RapidAPI_Key,
+        'X-RapidAPI-Host': process.env.X_RapidAPI_Host
+    }
+    };
+
+    try {
+        const response = await axios.request(options);
+        const firstTen = response.data.results.filter((item, index) => index < 10);
+        res.status(200).json({page: 1, results: firstTen});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+    
+}
