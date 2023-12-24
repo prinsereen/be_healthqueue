@@ -9,9 +9,6 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import UserRoute from "./routes/UserRoute.js";
 import cors from "cors";
-import admin from 'firebase-admin';
-import serviceAccount from './visionary-9f018-firebase-adminsdk-k9wr7-448a58875d.json' assert { type: 'json' };
-
 
 dotenv.config();
 
@@ -30,14 +27,8 @@ app.use(
       origin: "http://localhost:5173", 
       credentials: true, 
     })
-  );
+);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: process.env.storageBucket, 
-});
-
-const bucket = admin.storage().bucket();
 
 app.use(cookieParser())
 app.use(express.json())

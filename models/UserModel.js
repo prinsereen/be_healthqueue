@@ -22,6 +22,9 @@ const Users = db.define('users', {
     tgl_lahir:{
         type: DataTypes.DATE
     },
+    current_profile:{
+        type: DataTypes.INTEGER
+    },
     refresh_token: {
         type: DataTypes.TEXT
     }

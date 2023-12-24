@@ -55,17 +55,18 @@ export const login = async (req, res) => {
     const jenis_pengguna = user.jenis_pengguna;
     const email = user.email;
     const no_telp = user.no_telp
-    
+    const currentProfile= user.current_profile
+       
 
     const accessToken = jwt.sign(
-      { userId,name, jenis_pengguna, email, no_telp },
+      { userId,name, jenis_pengguna, email, no_telp, currentProfile },
       process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: "1d",
       }
     );
     const refreshToken = jwt.sign(
-      { userId,name, jenis_pengguna, email, no_telp },
+      { userId,name, jenis_pengguna, email, no_telp, currentProfile },
       process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: "1d",
@@ -83,7 +84,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       maxAge: 24 * 60 * 1000,
     });
-    res.json({ token: accessToken, result: {id: userId, jenis_pengguna: jenis_pengguna, email: email, no_telp: no_telp}});
+    res.json({ token: accessToken, result: {id: userId, jenis_pengguna, email, no_telp, current_profile: currentProfile}});
   } catch (error) {
     res.status(404).json({ msg: "User Tidak Ditemukan" });
   }
