@@ -5,7 +5,7 @@ import { check, validationResult } from "express-validator";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await Users.findAll({
-      attributes: ["id", "name", "jenis_pengguna", "no_telp", "email"],
+      attributes: ["id", "name", "jenis_pengguna", "no_telp", "email", "current_profile"],
     });
     res.status(200).json({
       status: "success",
@@ -22,7 +22,7 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const user = await Users.findOne({
-      attributes: ["id", "name", "jenis_pengguna", "no_telp"],
+      attributes: ["id", "name", "jenis_pengguna", "no_telp", "email", "current_profile"],
       where: {
         id: req.params.id,
       },

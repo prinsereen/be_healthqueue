@@ -1,9 +1,15 @@
 import express from "express";
-import {createProfile} from "../controllers/Profile.js"
+import {createProfile, changeProfile, getAllMyProfile} from "../controllers/Profile.js"
 import { verifyToken } from "../middleware/verifyToken.js";
+import multer from 'multer';
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-router.post('/profile', verifyToken, createProfile)
+router.post('/profile', verifyToken, upload.single('profileImage'),  createProfile)
+router.patch('/profile', verifyToken, changeProfile)
+router.get('/profile', verifyToken, getAllMyProfile)
 
 export default router;
