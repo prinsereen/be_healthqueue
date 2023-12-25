@@ -142,3 +142,30 @@ export const getUpcomingtMovie = async(req, res) => {
     }
     
 }
+
+export const getDetailMovie = async(req, res) => {
+
+    const id = req.params.id
+
+    const options = {
+    method: 'GET',
+    url: `https://api.themoviedb.org/3/movie/${id}`,
+    params: {
+        api_key: process.env.api_key,
+        append_to_response: "videos"
+    },
+    headers: {
+        'accept': 'application/json',
+        'Authorization': process.env.authbearer,
+    },
+    };
+
+    try {
+        const response = await axios.request(options);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+    
+}
