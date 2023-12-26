@@ -28,7 +28,7 @@ export const createProfile = async (req, res) => {
             const fileBuffer = profileImage.buffer;
             await file.save(fileBuffer, { contentType: profileImage.mimetype });
 
-            profileUrl = `https://storage.googleapis.com/${process.env.storageBucket}/${filename}`;
+            profileUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.storageBucket}/o/${filename}?alt=media`;
         }
 
         const newProfile = await Profile.create({

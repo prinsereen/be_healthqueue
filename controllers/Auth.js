@@ -3,6 +3,27 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 
+export const getMe = async (req, res) => {
+  try {
+
+    const {userId} = req
+
+    const user = await Users.findOne({
+      attributes: ["id", "name", "jenis_pengguna", "no_telp", "email", "current_profile"],
+      where: {
+        id: userId,
+      },
+    });
+    res.status(200).json({
+      status: "success",
+      msg: "Berhasil Mendapatkan User",
+      result: { user },
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 export const register = async (req, res) => {
   const { email, password, conf_password } = req.body;
   if (password !== conf_password)
