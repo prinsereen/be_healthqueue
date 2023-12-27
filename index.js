@@ -7,6 +7,8 @@ import VideoRoute from "./routes/VideoRoute.js"
 import ProfileRoute from "./routes/ProfileRoute.js"
 import SearchRoute from "./routes/SeaerchRoute.js"
 import RecomendationRoute from "./routes/RecomendationRoute.js"
+import SubscribeRoute from "./routes/SubscribeRoute.js"
+import WatchListRoute from "./routes/WatchListRoute.js"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import UserRoute from "./routes/UserRoute.js";
@@ -40,5 +42,7 @@ app.use(VideoRoute)
 app.use(ProfileRoute)
 app.use(SearchRoute)
 app.use(RecomendationRoute)
+app.use(SubscribeRoute)
+app.use(WatchListRoute)
 
 app.listen(5000, ()=> console.log("server running on port 5000"))
