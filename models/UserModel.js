@@ -24,7 +24,10 @@ const Users = db.define('users', {
     },
     current_profile:{
         type: DataTypes.INTEGER
-    },
+    }/* ,
+    id_watchlist:{
+        type: DataTypes.STRING
+    }, */,
     refresh_token: {
         type: DataTypes.TEXT
     }
