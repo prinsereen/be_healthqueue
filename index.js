@@ -5,6 +5,8 @@ import Profile from "./models/ProfileModel.js"; */
 import AuthRoute from "./routes/AuthRoute.js"
 import VideoRoute from "./routes/VideoRoute.js"
 import ProfileRoute from "./routes/ProfileRoute.js"
+import SearchRoute from "./routes/SeaerchRoute.js"
+import RecomendationRoute from "./routes/RecomendationRoute.js"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import UserRoute from "./routes/UserRoute.js";
@@ -36,5 +38,7 @@ app.use(AuthRoute)
 app.use(UserRoute)
 app.use(VideoRoute)
 app.use(ProfileRoute)
+app.use(SearchRoute)
+app.use(RecomendationRoute)
 
 app.listen(5000, ()=> console.log("server running on port 5000"))
