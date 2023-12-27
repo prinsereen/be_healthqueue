@@ -265,7 +265,7 @@ export const getBestSellingMovie = async (req, res) => {
             const subscribedResult = subscribedFeature(response, "movie");
             return res.status(200).json(subscribedResult);
         }
-        
+
   
           res.status(200).json(response);
       } catch (error) {
@@ -294,28 +294,28 @@ export const getBestSellingMovie = async (req, res) => {
     },
     };
 
-/*     const optionsReleaseDate = {
+    const optionsReleaseDate = {
         method: 'GET',
-        url: `https://api.themoviedb.org/3/tv/${id}/release_dates`,
+        url: `https://api.themoviedb.org/3/tv/${id}/content_ratings`,
         headers: {
             'accept': 'application/json',
             'Authorization': process.env.authbearer,
         },
     };
-     */
+    
 
     try {
         
         const responseMovieVideo = await axios.request(optionsMovieVideo);
+        const responseReleaseDate = await axios.request(optionsReleaseDate);
+        const certificationSG = responseReleaseDate.data.results
+        const response = responseMovieVideo.data
+        response.release_dates = certificationSG
 
         if (jenis_pengguna === "subscribed") {
-            const subscribedResult = subscribedFeature(responseMovieVideo.data, "series");
+            const subscribedResult = subscribedFeature(response, "series");
             return res.status(200).json(subscribedResult);
         }
-/*         const responseReleaseDate = await axios.request(optionsReleaseDate);
-        const certificationSG = responseReleaseDate.data.results.find(item => item.iso_3166_1 === 'SG');
-        const response = responseMovieVideo.data
-        response.release_dates = certificationSG */
 
         res.status(200).json(responseMovieVideo.data);
     } catch (error) {
