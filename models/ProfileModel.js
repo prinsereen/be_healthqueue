@@ -14,6 +14,9 @@ const Profile = db.define('profile', {
     profileUrl: {
         type: DataTypes.STRING
     },
+    watchlist_id:{
+        type: DataTypes.INTEGER
+    },
     userId: {
         type: DataTypes.INTEGER
     }

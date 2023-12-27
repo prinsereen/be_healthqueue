@@ -1,11 +1,11 @@
 import Users from "../models/UserModel.js";
+import Profile from "../models/ProfileModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 
 export const getMe = async (req, res) => {
   try {
-
     const {userId} = req
 
     const user = await Users.findOne({
@@ -14,10 +14,13 @@ export const getMe = async (req, res) => {
         id: userId,
       },
     });
+
+    const profile = await Profile.findOne({where: {id: user.current_profile}})
+    const response = { ...user.dataValues, content_rating: profile.contentRating };
     res.status(200).json({
       status: "success",
       msg: "Berhasil Mendapatkan User",
-      result: { user },
+      result: { user: response },
     });
   } catch (error) {
     res.status(500).json({ msg: error.message });

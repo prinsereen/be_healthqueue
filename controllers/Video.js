@@ -333,3 +333,36 @@ const subscribedFeature = (result, type) => {
     }
     return result;
 }
+
+export const getDetailEpisode = async(req, res) => {
+
+      const optionsMovieVideo = {
+      method: 'GET',
+      url: `https://api.themoviedb.org/3/tv/${req.params.series_id}/season/${req.params.season_number}/episode/${req.params.episode_number}`,
+      params: {
+        api_key: process.env.api_key,
+        append_to_response: "images",
+        language: "en-US",
+      },
+      headers: {
+        'accept': 'application/json',
+        'Authorization': process.env.authbearer,
+      },
+      };
+
+      try {
+          const responseMovieVideo = await axios.request(optionsMovieVideo);
+
+        if (jenis_pengguna === "subscribed") {
+            const subscribedResult = subscribedFeature(responseMovieVideo, "series");
+            return res.status(200).json(subscribedResult);
+        }
+
+  
+          res.status(200).json(response);
+      } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: 'Internal Server Error' });
+      }
+      
+  }
