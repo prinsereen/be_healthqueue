@@ -326,43 +326,56 @@ export const getBestSellingMovie = async (req, res) => {
 }
 
 const subscribedFeature = (result, type) => {
-    if (type = "movie"){
-        result.video = "https://firebasestorage.googleapis.com/v0/b/visionary-9f018.appspot.com/o/yt1s.com%20-%20Kompilasi%20Tekotok%2048.mp4?alt=media&token=87deeccc-f64d-4e9c-9a78-e4b932d73398"
-    }if (type = "series"){
-        result.video = "https://firebasestorage.googleapis.com/v0/b/visionary-9f018.appspot.com/o/yt1s.com%20-%20Kompilasi%20Tekotok%2048.mp4?alt=media&token=87deeccc-f64d-4e9c-9a78-e4b932d73398"
+    if (type === "movie") {  
+        result.video = "https://firebasestorage.googleapis.com/v0/b/visionary-9f018.appspot.com/o/yt1s.com%20-%20Kompilasi%20Tekotok%2048.mp4?alt=media&token=87deeccc-f64d-4e9c-9a78-e4b932d73398";
+    } else if (type === "series") {  
+        result.video = "https://firebasestorage.googleapis.com/v0/b/visionary-9f018.appspot.com/o/yt1s.com%20-%20Kompilasi%20Tekotok%2048.mp4?alt=media&token=87deeccc-f64d-4e9c-9a78-e4b932d73398";
     }
     return result;
 }
 
 export const getDetailEpisode = async(req, res) => {
+    const { userId } = req;
+    const jenis_pengguna = (await Users.findOne({ where: { id: userId } })).jenis_pengguna;
 
-      const optionsMovieVideo = {
-      method: 'GET',
-      url: `https://api.themoviedb.org/3/tv/${req.params.series_id}/season/${req.params.season_number}/episode/${req.params.episode_number}`,
-      params: {
-        api_key: process.env.api_key,
-        append_to_response: "images",
-        language: "en-US",
-      },
-      headers: {
-        'accept': 'application/json',
-        'Authorization': process.env.authbearer,
-      },
-      };
+    const { series_id, season_number, episode_number } = req.params;
 
-      try {
-          const responseMovieVideo = await axios.request(optionsMovieVideo);
+    const optionsMovieVideo = {
+        method: 'GET',
+        url: `https://api.themoviedb.org/3/tv/${series_id}/season/${season_number}/episode/${episode_number}`,
+        params: {
+            append_to_response: "images"
+        },
+        headers: {
+            'accept': 'application/json',
+            'Authorization': process.env.authbearer,
+        },
+    };
+
+    try {
+        try {
+            const responseMovieVideo = await axios.request(optionsMovieVideo);
+        
+            if (jenis_pengguna === "subscribed") {
+                const subscribedResult = subscribedFeature(responseMovieVideo.data, "series");
+                return res.status(200).json(subscribedResult);
+            }
+        
+            res.status(200).json(responseMovieVideo.data);  
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+        
 
         if (jenis_pengguna === "subscribed") {
-            const subscribedResult = subscribedFeature(responseMovieVideo, "series");
+            const subscribedResult = subscribedFeature(responseMovieVideo.data, "series");
             return res.status(200).json(subscribedResult);
         }
 
-  
-          res.status(200).json(response);
-      } catch (error) {
-          console.error(error);
-          res.status(500).json({ error: 'Internal Server Error' });
-      }
-      
-  }
+        res.status(200).json(responseMovieVideo.data);  
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
