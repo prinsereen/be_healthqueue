@@ -334,48 +334,35 @@ const subscribedFeature = (result, type) => {
     return result;
 }
 
-export const getDetailEpisode = async(req, res) => {
-    const { userId } = req;
-    const jenis_pengguna = (await Users.findOne({ where: { id: userId } })).jenis_pengguna;
-
-    const { series_id, season_number, episode_number } = req.params;
-
-    const optionsMovieVideo = {
+export const getDetailEpisode = async (req, res) => {
+    try {
+      const { userId } = req;
+      const jenis_pengguna = (await Users.findOne({ where: { id: userId } })).jenis_pengguna;
+  
+      const { series_id, season_number, episode_number } = req.params;
+  
+      const optionsMovieVideo = {
         method: 'GET',
         url: `https://api.themoviedb.org/3/tv/${series_id}/season/${season_number}/episode/${episode_number}`,
         params: {
-            append_to_response: "images"
+          append_to_response: 'images',
         },
         headers: {
-            'accept': 'application/json',
-            'Authorization': process.env.authbearer,
+          accept: 'application/json',
+          Authorization: process.env.authbearer,
         },
-    };
-
-    try {
-        try {
-            const responseMovieVideo = await axios.request(optionsMovieVideo);
-        
-            if (jenis_pengguna === "subscribed") {
-                const subscribedResult = subscribedFeature(responseMovieVideo.data, "series");
-                return res.status(200).json(subscribedResult);
-            }
-        
-            res.status(200).json(responseMovieVideo.data);  
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-        
-
-        if (jenis_pengguna === "subscribed") {
-            const subscribedResult = subscribedFeature(responseMovieVideo.data, "series");
-            return res.status(200).json(subscribedResult);
-        }
-
-        res.status(200).json(responseMovieVideo.data);  
+      };
+  
+      const responseMovieVideo = await axios.request(optionsMovieVideo);
+  
+      if (jenis_pengguna === 'subscribed') {
+        const subscribedResult = subscribedFeature(responseMovieVideo.data, 'series');
+        return res.status(200).json(subscribedResult);
+      }
+  
+      res.status(200).json(responseMovieVideo.data);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
     }
-}
+  };

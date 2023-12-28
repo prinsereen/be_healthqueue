@@ -13,6 +13,7 @@ import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import UserRoute from "./routes/UserRoute.js";
 import cors from "cors";
+import bodyParser from "body-parser";
 
 dotenv.config();
 
@@ -33,6 +34,8 @@ app.use(
     })
 );
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(cookieParser())
 app.use(express.json())
