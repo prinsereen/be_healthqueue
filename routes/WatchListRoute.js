@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/list', verifyToken, createList)
 router.post('/item', verifyToken, addItems)
-router.delete('/item', verifyToken, deleteItems)
+router.post('/delete/item', verifyToken, deleteItems)
 router.get('/list', verifyToken, getDetailList)
 
 export default router;
