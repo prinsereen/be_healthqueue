@@ -2,11 +2,22 @@ import Profile from "../models/ProfileModel.js";
 import Users from "../models/UserModel.js";
 import admin from "../config/firebaseConfig.js";
 import axios from "axios"
+import { validationResult } from "express-validator";
 
 export const createProfile = async (req, res) => {
     try {
         const { profile_name, contentRating } = req.body;
         const { userId } = req;
+
+/*         const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          console.log(errors)
+          return res.status(400).json({
+            status: "error",
+            msg: errors["errors"][0].path + " " + errors["errors"][0].msg,
+            result: errors["errors"],
+          });
+        } */
 
         const profiles = await Profile.findAll({
             where: {
@@ -30,6 +41,8 @@ export const createProfile = async (req, res) => {
             await file.save(fileBuffer, { contentType: profileImage.mimetype });
 
             profileUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.storageBucket}/o/${filename}?alt=media`;
+        }else {
+            return res.status(400).json({ msg: "Profile not null" });
         }
 
         const newProfile = await Profile.create({
