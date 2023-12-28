@@ -9,15 +9,9 @@ export const createProfile = async (req, res) => {
         const { profile_name, contentRating } = req.body;
         const { userId } = req;
 
-/*         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          console.log(errors)
-          return res.status(400).json({
-            status: "error",
-            msg: errors["errors"][0].path + " " + errors["errors"][0].msg,
-            result: errors["errors"],
-          });
-        } */
+        if (profile_name === "" || contentRating == ""){
+            return res.status(400).json({ msg: "not null" });
+        } 
 
         const profiles = await Profile.findAll({
             where: {
