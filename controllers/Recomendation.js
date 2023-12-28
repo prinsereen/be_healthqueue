@@ -2,9 +2,72 @@ import axios from "axios";
 import Users from "../models/UserModel.js";
 import Profile from "../models/ProfileModel.js";
 
-// Rekomendasi by Id 2 API 
-// Trending MOVIE ama Series
 export const getRecomendationSeriesById = async(req, res) => {
+    try {
+        const seriesId = req.params.id
+
+        const options = {
+            method: 'GET',
+            url: `https://api.themoviedb.org/3/tv/${seriesId}/recommendations`,
+            params: {
+                include_adult: false,
+                language: "en-US",
+                page: req.params.page,
+            },
+            headers: {
+                'accept': 'application/json',
+                'Authorization': process.env.authbearer,
+            },
+        };
+        
+        try {
+            const response = await axios.request(options);
+            res.status(200).json(response.data);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+            
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+export const getRecomendationMovieById = async(req, res) => {
+    try {
+        const movieId = req.params.id
+
+        const options = {
+            method: 'GET',
+            url: `https://api.themoviedb.org/3/movie/${movieId}/recommendations`,
+            params: {
+                language: "en-US",
+                page: req.params.page,
+            },
+            headers: {
+                'accept': 'application/json',
+                'Authorization': process.env.authbearer,
+            },
+        };
+        
+        try {
+            const response = await axios.request(options);
+            res.status(200).json(response.data);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+            
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+export const getSimilarSeriesById = async(req, res) => {
     try {
         const seriesId = req.params.id
 
@@ -37,7 +100,7 @@ export const getRecomendationSeriesById = async(req, res) => {
     }
 }
 
-export const getRecomendationMovieById = async(req, res) => {
+export const getSimilarMovieById = async(req, res) => {
     try {
         const movieId = req.params.id
 
@@ -128,7 +191,7 @@ export const getTrendingSeries = async(req, res) => {
 
     const options = {
         method: 'GET',
-        url: 'https://api.themoviedb.org/3/discover/movie',
+        url: 'https://api.themoviedb.org/3/discover/tv',
         params: {
             include_adult: false,
             include_null_first_air_dates: false,

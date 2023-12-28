@@ -73,3 +73,26 @@ export const getDetailList = async(req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+
+export const deleteItems = async(req, res) => {
+  const user = await Users.findOne({ where: { id: req.userId } });
+  const currentProfile = await Profile.findOne({ where: { id: user.current_profile } });
+
+  const options = {
+      method: 'DELETE',
+      url: `https://api.themoviedb.org/4/list/${currentProfile.watchlist_id}/items`,
+      headers: {
+        accept: 'application/json',
+        Authorization: process.env.access_token,
+      },
+      data: req.body
+    };
+  
+    try {
+      const response = await axios.request(options);
+      res.status(200).json(response.data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+}

@@ -1,6 +1,7 @@
 import Profile from "../models/ProfileModel.js";
 import Users from "../models/UserModel.js";
 import admin from "../config/firebaseConfig.js";
+import axios from "axios"
 
 export const createProfile = async (req, res) => {
     try {
@@ -45,7 +46,32 @@ export const createProfile = async (req, res) => {
                 }
             })
 
-        return res.status(200).json({ msg: "Profile created successfully", profile_name, contentRating, profileUrl, userId});
+        const bodyData = {
+            "description": "",
+            "name": "My Cool List",
+            "iso_3166_1": "US",
+            "iso_639_1": "en",
+            "public": true
+        }
+
+        const user = await Users.findOne({ where: { id: req.userId } });
+
+        const options = {
+            method: 'POST',
+            url: 'https://api.themoviedb.org/4/list',
+            headers: {
+              accept: 'application/json',
+              Authorization: process.env.access_token,
+            },
+            data: bodyData
+        };
+
+        const response = await axios.request(options);
+        await Profile.update({watchlist_id: response.data.id},{ where: { id: user.current_profile } });
+
+        const watchlist_id = response.data.id
+
+        return res.status(200).json({ msg: "Profile created successfully", profile_name, contentRating, profileUrl, userId, watchlist_id});
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: "Internal server error" });
